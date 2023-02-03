@@ -30,6 +30,20 @@ php artisan vendor:publish
 ```
 </p>
 
+**Verificação de emails**
+<p>
+Importante método para inibir possíveis cadastros com emails inválidos, dessa maneira evitar um possível ataque hacker na aplicação ou pessoas mau intecionadas.
+</p>
+
+Utilizando o método nativo do laravel para verificação, temos no modelo User o método chamado *MustVerifyEmail*. Com ele podemos chamar na classe User implementando-o e modificando nas rotas por meio do middleware.
+
+```
+class User extends Authenticatable implements MustVerifyEmail
+
+Route::resource('tarefa', TarefaController::class)
+    ->middleware('verified');
+```
+
 
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
