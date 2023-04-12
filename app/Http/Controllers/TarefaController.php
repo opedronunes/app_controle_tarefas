@@ -7,6 +7,8 @@ use App\Models\Tarefa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Exports\TarefasExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TarefaController extends Controller
 {
@@ -21,32 +23,10 @@ class TarefaController extends Controller
      */
     public function index()
     {
-        $id = Auth::user()->id;
-        $name = Auth::user()->name;
-        $email = Auth::user()->email;
-        
-        return "ID: $id | Nome: $name | Email: $email";
+        $user_id = auth()->user()->id;
+        $tarefas = Tarefa::where('user_id', $user_id)->paginate(3);
 
-        /*
-        if (Auth::check()) {
-            $id = Auth::user()->id;
-            $name = Auth::user()->name;
-            $email = Auth::user()->email;
-            return "ID: $id | Nome: $name | Email: $email";
-        }else{
-            return 'Você não esta logado no sistema';
-        }
-
-        
-        if (auth()->check()) {
-            $id = auth()->user()->id;
-            $name = auth()->user()->name;
-            $email = auth()->user()->email;
-            return "ID: $id | Nome: $name | Email: $email";
-        }else{
-            return 'Você não esta logado no sistema';
-        }
-        */
+        return view('tarefa.index', ['tarefas' => $tarefas]);
 
     }
 
@@ -97,7 +77,12 @@ class TarefaController extends Controller
      */
     public function edit(Tarefa $tarefa)
     {
-        //
+        $user_id = auth()->user()->id;
+        if ($tarefa->user_id == $user_id) {
+            return view('tarefa.edit', ['tarefa' => $tarefa]);
+        }
+
+        return view('acesso-negado');
     }
 
     /**
@@ -109,7 +94,15 @@ class TarefaController extends Controller
      */
     public function update(Request $request, Tarefa $tarefa)
     {
-        //
+        
+        if (!$tarefa->user_id == auth()->user()->id) {
+            return view('acesso-negado');
+        }
+
+
+        $tarefa->update($request->all());
+        return redirect()->route('tarefa.show', ['tarefa' => $tarefa->id]);
+        
     }
 
     /**
@@ -120,6 +113,14 @@ class TarefaController extends Controller
      */
     public function destroy(Tarefa $tarefa)
     {
-        //
+        if (!$tarefa->user_id == auth()->user()->id) {
+            return view('acesso-negado');
+        }
+        $tarefa->delete();
+        return redirect()->route('tarefa.index');
+    }
+
+    public function exportacao(){
+        return Excel::download(new TarefasExport, 'lista_de_tarefas.xlsx');   
     }
 }
