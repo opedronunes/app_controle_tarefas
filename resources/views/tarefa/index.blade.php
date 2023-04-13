@@ -8,8 +8,10 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="m-0">Tarefa</h5>
                     <div class="d-flex gap-1">
-                        <a href="{{route('tarefa.create')}}">Nova</a>
-                        <a href="{{route('tarefa.exportacao')}}">Exportar</a>
+                        <a href="{{route('tarefa.create')}}" class="btn btn-sm btn-info">Nova</a>
+                        <a href="{{route('tarefa.exportacao', ['extensao' => 'xlsx'])}}" class="btn btn-sm btn-secondary">XLSX</a>
+                        <a href="{{route('tarefa.exportacao', ['extensao' => 'csv'])}}" class="btn btn-sm btn-secondary">CSV</a>
+                        <a href="{{route('tarefa.exportacao', ['extensao' => 'pdf'])}}" class="btn btn-sm btn-secondary">PDF</a>
                     </div>
                 </div>
 
@@ -31,14 +33,14 @@
                                     <td>{{ date('d/m/Y', strtotime($t->data_limite_conclusao)) }}</td>
                                     <td class="d-flex gap-2">
                                         <div>
-                                            <a href="{{ route('tarefa.edit', $t->id) }}">Editar</a>
+                                            <a href="{{ route('tarefa.edit', $t->id) }}" class="btn btn-sm btn-warning">Editar</a>
                                         </div>
                                         <div>
                                             <form action="{{ route('tarefa.destroy', $t->id) }}" id="form_{{$t->id}}" method="post">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
-                                            <a href="#" onclick="document.getElementById('form_{{$t->id}}').submit()" >Excluir</a>
+                                            <a href="#" onclick="document.getElementById('form_{{$t->id}}').submit()" class="btn btn-sm btn-danger">Excluir</a>
                                         </div>
                                     </td>
                                 </tr>
