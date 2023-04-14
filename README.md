@@ -1,5 +1,9 @@
 # App para controle de tarefas
 
+<div>
+    <img src="./public/img/lista_tarefas.png" />
+</div>
+
 **Laravel UI**
 <br>
 Para entender como este pacote funciona, ele nos permite iniciar projetos com pré-definições de Front-end, podendo ser baseadas em Frameworks javascript (React, Vue e um kit CSS Bootstrap).
@@ -15,6 +19,8 @@ Para utilizar os pacotes, basta clicar neste link:
 No framework podemos de maneira fácil montar uma estrutura de envio d e-mails com layouts pré-definidos. Neste exemplo configuramos utilizamos o SMTP do Gmail configurado no arquivo *.env*.
 <p>
 Para montar uma estrutura dentro do framework, cria-se uma classe, e uma view referente ao modelo de envio de emails com o parâmetro --markdown com o seguinte comando:
+
+
 
 ```
 php artisan make:mail MensagemTesteMail --markdown emails.mensagem-teste
